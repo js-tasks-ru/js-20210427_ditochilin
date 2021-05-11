@@ -11,15 +11,16 @@ export function createGetter(path) {
     }
 
     const getFieldFromObj = (arr, currObj) => {
-        const currField = arr.shift();
+        const arrCopy = [...arr];
+        const currField = arrCopy.shift();
         const currValue = currObj[currField];
-        if(currValue == undefined) {
-            return undefined;
+        if(currValue === undefined) {
+            return;
         }
-        if (!arr.length) {
+        if (!arrCopy.length) {
             return currValue;
         }
-        return getFieldFromObj(arr, currValue);
+        return getFieldFromObj(arrCopy, currValue);
     }
 
     return (obj) => getFieldFromObj(searchArray, obj);
