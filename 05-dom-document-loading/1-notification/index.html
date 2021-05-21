@@ -7,6 +7,8 @@
 
 <button id="btn1">Show simple message!</button>
 
+<div id="targetDialog"></div>
+
 <script type="module">
   import NotificationMessage from './index.js';
 
@@ -16,6 +18,6 @@
       type: 'success'
     });
 
-    notification.show();
+    notification.show(targetDialog);
   });
 </script>
