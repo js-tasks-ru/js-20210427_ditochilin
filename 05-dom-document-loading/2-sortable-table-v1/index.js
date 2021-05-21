@@ -1,11 +1,7 @@
 export default class SortableTable {
   constructor(headerConfig = [], data = []) {
     this.headerConfig = headerConfig;
-    if (data instanceof Object) {
-      this.data = data.data;  
-    } else {
-      this.data = data;
-    }
+    this.data = data.data || data;  
     this.render();
   }
 
@@ -49,22 +45,18 @@ export default class SortableTable {
           </div>`;
   }
 
-  getRowImage(template, item) {
-    if (template) {
-      return template(item.images);
-    } 
-    return '';
-  }
-
   getBodyRows(data) {
     const template = this.headerConfig[0].template;
-    return data.map(item => 
+    return data.map(item =>
       `<a href="/${item.id}" class="sortable-table__row">
-        ${this.getRowImage(template, item)}
-        <div class="sortable-table__cell">${item.title}</div>
-        <div class="sortable-table__cell">${item.quantity}</div>
-        <div class="sortable-table__cell">${item.price}</div>
-        <div class="sortable-table__cell">${item.sales}</div>
+        ${this.headerConfig.map(header => {
+        if (header.template) {
+          return header.template(item[header.id]);
+        } else {
+          return `<div class="sortable-table__cell">${item[header.id]}</div>`;
+        }
+      }
+      ).join('')} 
       </a>  
       `).join('');
   }
