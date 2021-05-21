@@ -1,7 +1,11 @@
 export default class SortableTable {
   constructor(headerConfig = [], data = []) {
     this.headerConfig = headerConfig;
-    this.data = data;
+    if (data instanceof Object) {
+      this.data = data.data;  
+    } else {
+      this.data = data;
+    }
     this.render();
   }
 
@@ -78,7 +82,7 @@ export default class SortableTable {
     const nodes = element.querySelectorAll('[data-element]');
     
     const res = {};
-    for(const node of nodes) {
+    for (const node of nodes) {
       const name = node.dataset.element;
       res[name] = node;
     }
@@ -108,15 +112,15 @@ export default class SortableTable {
     };
     const dir = directions[orderValue];
 
-    return arr.sort( (x, y) => {
-        switch(sortType) {
-          case 'number' :
-            return dir * (x[fieldValue] - y[fieldValue]);
-          case 'string' :
-            return dir * x[fieldValue].localeCompare(y[fieldValue], ['ru', 'en']);
-          default :
-            return dir * (x[fieldValue] - y[fieldValue]);  
-        }
+    return arr.sort((x, y) => {
+      switch (sortType) {
+      case 'number' :
+        return dir * (x[fieldValue] - y[fieldValue]);
+      case 'string' :
+        return dir * x[fieldValue].localeCompare(y[fieldValue], ['ru', 'en']);
+      default :
+        return dir * (x[fieldValue] - y[fieldValue]);  
+      }
     });
   }
 
